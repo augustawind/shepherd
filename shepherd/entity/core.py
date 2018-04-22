@@ -215,8 +215,7 @@ class Entity(metaclass=abc.ABCMeta):
             return None
 
         amount = amount * ((100 - self.p.resistance) / 100)
-        health = self._state['health'] + amount
-        health = utils.bounded(health, 0, self.p.stamina)
+        health = utils.bounded(self._state['health'] + amount, 0, self.p.stamina)
         self._state['health'] = health
 
         if health == 0:

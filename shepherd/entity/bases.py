@@ -37,8 +37,20 @@ class Move:
     def move(self) -> Action:
         return Action(self.p.move_delay, self.execute_move)
 
+    def change_dir(self, dir_: Point):
+        """Manually change the direction of motion on the Entity."""
+        self._state['dir'] = dir_.to_dir()
 
-class AutoMove:
+    def execute_move(self, origin, world) -> int:
+        """Move in the set direction. If a cell is occupied, just give up."""
+        dest = origin + self.get_state_val('dir')
+        if world.get_cell(dest).occupant:
+            return 0
+        world.move(self.id, origin, dest)
+        return self.p.move_cost
+
+
+class AutoMove(Move):
 
     def __init__(self, properties, schema=None, state=None, *args, **kwargs):
         schema = utils.merge(

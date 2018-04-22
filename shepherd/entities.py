@@ -62,7 +62,7 @@ class Grass(Organism):
         return Action.empty()
 
 
-class WanderingShrub(Move, AutoMove, Organism):
+class WanderingShrub(AutoMove, Organism):
 
     name = 'wandering shrub'
     char = 'h'
@@ -93,7 +93,7 @@ class WanderingShrub(Move, AutoMove, Organism):
         return self.move()
 
 
-class GluttonousShambler(Hunt, Move, AutoMove, Organism):
+class GluttonousShambler(Hunt, AutoMove, Organism):
 
     name = 'gluttonous shambler'
     char = 'M'

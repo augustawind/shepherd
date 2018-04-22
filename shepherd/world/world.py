@@ -130,10 +130,7 @@ class World:
                 assert entity, (
                     'char "%s" missing from legend' % char
                 )
-                if entity.name == '__player__':
-                    world.add_player(point, entity())
-                else:
-                    world.add(point, entity())
+                world.add(point, entity())
         return world
 
     def tick(self):
@@ -141,18 +138,6 @@ class World:
         for point, cell in self.iter_cells():
             for entity in cell:
                 entity.tick(point, self)
-
-    # Player control
-
-    def add_player(self, point: Point, player_entity: Player):
-        self.add(point, player_entity)
-        self.player = player_entity
-        self.player_pos = point
-
-    def move_player(self, delta: Point) -> Entity:
-        dest = self.player_pos + delta
-        self.move(self.player.id, self.player_pos, dest)
-        self.player_pos = dest
 
     # Logging things
 
@@ -242,18 +227,25 @@ class World:
 
     def add(self, point: Point, entity: Entity):
         """Add the given Entity to the Cell at the given Point."""
-        self.entity_name_map[entity.name].add(entity.id)
+        if entity.name == '__player__':
+            self.player = entity
+            self.player_pos = point
+        else:
+            self.entity_name_map[entity.name].add(entity.id)
         self.entity_id_map[entity.id] = EntityInfo(point, entity)
         self.get_cell(point).add(entity)
 
     def remove(self, point: Point, entity_id: UUID) -> Entity:
         """Remove and return the specified Entity at the given Point."""
         info = self.entity_id_map.pop(entity_id)
-        self.entity_name_map[info.entity.name].remove(entity_id)
+        if info.entity.name != '__player__':
+            self.entity_name_map[info.entity.name].remove(entity_id)
         return self.get_cell(point).pop(entity_id)
 
     def move(self, entity_id: UUID, src: Point, dest: Point) -> Entity:
         """Move the specified Entity from ``src`` to ``dest`` and return it."""
         entity = self.remove(src, entity_id)
         self.add(dest, entity)
+        if entity.name == '__player__':
+            self.player_pos = dest
         return entity

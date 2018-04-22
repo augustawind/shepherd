@@ -147,7 +147,8 @@ class App:
 
     def move_player(self, delta):
         def cmd():
-            self.world.move_player(delta)
+            self.world.player.change_dir(delta)
+            self.world.player.execute_move(self.world.player_pos, self.world)
         return cmd
 
     def skip(self):
