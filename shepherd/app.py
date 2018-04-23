@@ -106,14 +106,18 @@ class App:
         for panel in self.panels.values():
             panel.initscr()
 
-        self.cmd = {
-            b's': self.skip,
-            b'^X': self.quit,
-            b'h': self.move_player(Point(-1, 0)),
-            b'j': self.move_player(Point(0, 1)),
-            b'k': self.move_player(Point(0, -1)),
-            b'l': self.move_player(Point(1, 0)),
-        }
+        self.cmd = utils.expandkeys({
+            (b'^X',): self.quit,
+            (b's', b'5'): self.skip,
+            (b'h', curses.KEY_LEFT): self.move_player(Point(-1, 0)),
+            (b'j', curses.KEY_DOWN): self.move_player(Point(0, 1)),
+            (b'k', curses.KEY_UP): self.move_player(Point(0, -1)),
+            (b'l', curses.KEY_RIGHT): self.move_player(Point(1, 0)),
+            (b'y', b'7', curses.KEY_HOME): self.move_player(Point(-1, -1)),
+            (b'u', b'9', curses.KEY_PPAGE): self.move_player(Point(1, -1)),
+            (b'n', b'3', curses.KEY_NPAGE): self.move_player(Point(1, 1)),
+            (b'b', b'1', curses.KEY_END): self.move_player(Point(-1, 1)),
+        })
 
     def run(self):
         self.update()

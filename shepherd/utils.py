@@ -249,3 +249,8 @@ def halves(n: int) -> (int, int):
     x = math.floor(n / 2)
     y = x + (n - (x * 2))
     return x, y
+
+
+def expandkeys(d: Mapping) -> Mapping:
+    """Expand a mapping with iterable keys to have entry per item."""
+    return {k: val for keys, val in d.items() for k in keys}
