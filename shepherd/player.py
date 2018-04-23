@@ -8,7 +8,7 @@ PLAYER_ID = UUID('00000000-0000-0000-0000-000000000000')
 
 class Player(Move, Organism):
 
-    is_player = True
+    player_controlled = True
     name = 'shepherd'
     char = '@'
 
