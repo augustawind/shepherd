@@ -8,7 +8,8 @@ PLAYER_ID = UUID('00000000-0000-0000-0000-000000000000')
 
 class Player(Move, Organism):
 
-    name = '__player__'
+    is_player = True
+    name = 'shepherd'
     char = '@'
 
     def __init__(self, properties=None, ):

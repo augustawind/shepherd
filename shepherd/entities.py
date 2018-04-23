@@ -1,8 +1,4 @@
-from shepherd.entity.bases import (
-    AutoMove,
-    Hunt,
-    Move,
-)
+from shepherd.entity.bases import AutoMove, Hunt
 from shepherd.entity.core import (
     Action,
     InanimateObject,

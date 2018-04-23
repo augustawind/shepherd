@@ -80,6 +80,7 @@ class PropertyValidationError(EntityError):
 
 
 class Entity(metaclass=abc.ABCMeta):
+    player_controlled = False
 
     def __init__(self, properties, schema=None, state=None, categories=None,
                  traversable=False):
@@ -215,7 +216,8 @@ class Entity(metaclass=abc.ABCMeta):
             return None
 
         amount = amount * ((100 - self.p.resistance) / 100)
-        health = utils.bounded(self._state['health'] + amount, 0, self.p.stamina)
+        target = self._state['health'] + amount
+        health = utils.bounded(target, 0, self.p.stamina)
         self._state['health'] = health
 
         if health == 0:

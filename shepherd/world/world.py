@@ -227,7 +227,7 @@ class World:
 
     def add(self, point: Point, entity: Entity):
         """Add the given Entity to the Cell at the given Point."""
-        if entity.name == '__player__':
+        if entity.is_player:
             self.player = entity
             self.player_pos = point
         else:
@@ -238,7 +238,7 @@ class World:
     def remove(self, point: Point, entity_id: UUID) -> Entity:
         """Remove and return the specified Entity at the given Point."""
         info = self.entity_id_map.pop(entity_id)
-        if info.entity.name != '__player__':
+        if info.entity.is_player:
             self.entity_name_map[info.entity.name].remove(entity_id)
         return self.get_cell(point).pop(entity_id)
 
@@ -246,6 +246,6 @@ class World:
         """Move the specified Entity from ``src`` to ``dest`` and return it."""
         entity = self.remove(src, entity_id)
         self.add(dest, entity)
-        if entity.name == '__player__':
+        if entity.is_player:
             self.player_pos = dest
         return entity
