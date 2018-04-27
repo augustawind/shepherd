@@ -39,11 +39,11 @@ class Move:
 
     def change_dir(self, dir_: Point):
         """Manually change the direction of motion on the Entity."""
-        self._state['dir'] = dir_.to_dir()
+        self.state['dir'] = dir_.to_dir()
 
     def execute_move(self, origin, world) -> int:
         """Move in the set direction. If a cell is occupied, just give up."""
-        dest = origin + self.get_state('dir')
+        dest = origin + self.state['dir']
         if world.get_cell(dest).occupant:
             return 0
         world.move(self.id, origin, dest)
@@ -79,7 +79,7 @@ class AutoMove(Move):
         if not dest:
             return 0
 
-        self._state['dir'] = dest - origin
+        self.state['dir'] = dest - origin
         world.move(self.id, origin, dest)
         return self.p.move_cost
 
@@ -92,7 +92,7 @@ class AutoMove(Move):
         if self.p.pivot_prob > random.random() * 100:
             dest = random.choice(traversable_points)
         else:
-            dest = origin + self._state['dir']
+            dest = origin + self.state['dir']
             if dest not in traversable_points:
                 dest = random.choice(traversable_points)
 
@@ -168,10 +168,10 @@ class Sense:
         targets = self.matching_categories(task, entity)
 
         if targets:
-            sense_priority = self._state['sensing']['priority']
+            sense_priority = self.state['sensing']['priority']
             priority = len(targets)
             if utils.gt_or_random_eq(priority, sense_priority):
-                self._state['sensing'].update(
+                self.state['sensing'].update(
                     point=point,
                     entity=entity,
                     priority=priority,
@@ -184,7 +184,7 @@ class Sense:
         return utils.dict_subset(entity.categories, self.p.tracking[task])
 
     def get_focus(self) -> (Point, Entity):
-        sensing = self._state['sensing']
+        sensing = self.state['sensing']
         return sensing['point'], sensing['entity']
 
 
@@ -198,7 +198,7 @@ class Seek(Sense, Move):
             # TODO: log this somewhere (stdlib logging?)
             return Action.empty()
 
-        self._state['dir'] = (point - origin).to_dir()
+        self.state['dir'] = (point - origin).to_dir()
         return self.move()
 
 

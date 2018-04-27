@@ -125,17 +125,17 @@ class Entity(metaclass=abc.ABCMeta):
                 'default': 0,
             },
         )
-        self._schema.update(schema or {})
+        utils.merge(self._schema, schema)
         self.validator = cerberus.Validator(self._schema)
 
         properties = self.validate(properties)
         self._properties = self._mk_properties(properties)
 
-        self._state = dict(
+        self.state = utils.Namespace(
             health=self.p.stamina,
             intact=True,
         )
-        self._state.update(state or {})
+        utils.merge(self.state, state)
 
     @utils.classproperty
     @abc.abstractmethod
@@ -193,13 +193,6 @@ class Entity(metaclass=abc.ABCMeta):
     def traversable(self):
         return self._traversable
 
-    def get_state(self, *keys):
-        if not keys:
-            return self._state.copy()
-        for key in keys:
-            val = self._state[key]
-        return val
-
     def tick(self, origin, world):
         self._ticks += 1
         if not self._action:
@@ -211,7 +204,7 @@ class Entity(metaclass=abc.ABCMeta):
         return done
 
     def is_intact(self) -> bool:
-        return self._state['intact']
+        return self.state['intact']
 
     def mod_health(self, amount: int) -> bool:
         if not self.is_intact():
@@ -219,12 +212,12 @@ class Entity(metaclass=abc.ABCMeta):
             return None
 
         amount = amount * ((100 - self.p.resistance) / 100)
-        target = self._state['health'] + amount
+        target = self.state['health'] + amount
         health = utils.bounded(target, 0, self.p.stamina)
-        self._state['health'] = health
+        self.state['health'] = health
 
         if health == 0:
-            self._state['intact'] = False
+            self.state['intact'] = False
             return False
         return True
 
@@ -270,17 +263,17 @@ class Organism(Entity):
             self.mod_health(self.p.regeneration / 10)
 
     def is_conscious(self) -> bool:
-        return self._state['conscious']
+        return self.state['conscious']
 
     def mod_energy(self, amount: int) -> bool:
         if not self.is_conscious():
             # TODO: regain consciousness attempts (a la D&D death saves)
             return None
 
-        energy = utils.bounded(self._state['energy'] + amount, 0, 100)
-        self._state['energy'] = energy
+        energy = utils.bounded(self.state['energy'] + amount, 0, 100)
+        self.state['energy'] = energy
         if energy == 0:
-            self._state['conscious'] = False
+            self.state['conscious'] = False
             return False
         return True
 

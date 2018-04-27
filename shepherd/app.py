@@ -309,7 +309,7 @@ class MenuPanel(TextPanel):
                 self.mk_header(point, entity),
                 '-' * self._inner.width,
             ]
-            state_str = utils.linefmt(entity.get_state(), self.indent_level)
+            state_str = utils.linefmt(entity.state, self.indent_level)
             lines.extend(state_str.splitlines())
             self.draw_lines(lines, wrap=True)
         else:
