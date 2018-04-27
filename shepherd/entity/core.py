@@ -4,6 +4,7 @@ import enum
 import pprint
 import uuid
 import warnings
+from copy import deepcopy
 from typing import Callable, TypeVar
 
 import cerberus
@@ -12,7 +13,7 @@ from shepherd import utils
 from shepherd.world.point import Point
 
 __all__ = ['Size', 'Action', 'DoesNotExistError', 'Entity', 'InanimateObject',
-           'Organism']
+           'Organism', 'Final']
 
 World = TypeVar('W')
 
@@ -80,6 +81,7 @@ class PropertyValidationError(EntityError):
 
 
 class Entity(metaclass=abc.ABCMeta):
+
     player_controlled = False
 
     def __init__(self, properties, schema=None, state=None, categories=None,
@@ -293,6 +295,6 @@ class Final:
 
     def __init__(self, **kwargs):
         for attr in ENTITY_ATTRS:
-            default = getattr(self, attr)
-            kwargs[attr] = utils.merge(default, kwargs[attr])
+            default = deepcopy(getattr(self, attr))
+            kwargs[attr] = utils.merge(default, kwargs.get(attr, None))
         super().__init__(**kwargs)
