@@ -193,11 +193,12 @@ class Entity(metaclass=abc.ABCMeta):
     def traversable(self):
         return self._traversable
 
-    def get_state(self):
-        return self._state.copy()
-
-    def get_state_val(self, key):
-        return self._state[key]
+    def get_state(self, *keys):
+        if not keys:
+            return self._state.copy()
+        for key in keys:
+            val = self._state[key]
+        return val
 
     def tick(self, origin, world):
         self._ticks += 1

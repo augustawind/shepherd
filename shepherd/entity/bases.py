@@ -43,7 +43,7 @@ class Move:
 
     def execute_move(self, origin, world) -> int:
         """Move in the set direction. If a cell is occupied, just give up."""
-        dest = origin + self.get_state_val('dir')
+        dest = origin + self.get_state('dir')
         if world.get_cell(dest).occupant:
             return 0
         world.move(self.id, origin, dest)
