@@ -8,10 +8,10 @@ from shepherd.entity.core import (
 )
 
 
-class StonePillar(Final, InanimateObject):
+class LargeRock(Final, InanimateObject):
 
-    name = 'stone pillar'
-    char = 'I'
+    name = 'large rock'
+    char = 'O'
 
     properties = dict(
         size=Size.giant,
@@ -54,9 +54,9 @@ class Grass(Final, Organism):
         return Action.empty()
 
 
-class WanderingShrub(Final, AutoMove, Organism):
+class Sheep(Final, AutoMove, Organism):
 
-    name = 'wandering shrub'
+    name = 'sheep'
     char = 'h'
 
     properties = dict(
@@ -75,17 +75,17 @@ class WanderingShrub(Final, AutoMove, Organism):
 
     categories = {
         'organic': True,
-        'exterior': 'fibrous',
+        'exterior': 'fleshy',
     }
 
     def next_action(self, origin, world):
         return self.move()
 
 
-class GluttonousShambler(Final, Hunt, AutoMove, Organism):
+class Wolf(Final, Hunt, AutoMove, Organism):
 
-    name = 'gluttonous shambler'
-    char = 'M'
+    name = 'wolf'
+    char = '}'
     traversable = False
 
     properties = dict(

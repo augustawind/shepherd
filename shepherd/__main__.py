@@ -4,43 +4,43 @@ import sys
 
 from shepherd.app import App
 from shepherd.entities import (
-    StonePillar,
+    LargeRock,
     Grass,
-    WanderingShrub,
-    GluttonousShambler,
+    Sheep,
+    Wolf,
 )
 from shepherd.player import Player
 from shepherd.world.world import World
 
 LEGEND = {
-    'I': StonePillar,
+    'O': LargeRock,
     '"': Grass,
-    'h': WanderingShrub,
-    'M': GluttonousShambler,
+    'h': Sheep,
+    '}': Wolf,
     '@': Player,
 }
 
 LAYERS = [[
-    'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII',
-    'I""                                    I',
-    'I""""                                  I',
-    'I"""  h                                I',
-    'I"  "             @                    I',
-    'I   h M                                I',
-    'I     " "                              I',
-    'I  """ ""                              I',
-    'I     """                              I',
-    'I     """          "                   I',
-    'I     """                              I',
-    'I     """                              I',
-    'I     """                              I',
-    'I     """                              I',
-    'I     """                              I',
-    'I     """                              I',
-    'I     """                              I',
-    'I     """                              I',
-    'I     """                              I',
-    'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII',
+    'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO',
+    'O""                                    O',
+    'O""""                                  O',
+    'O"""  h                                O',
+    'O"  "             @                    O',
+    'O   h }                                O',
+    'O     " "                              O',
+    'O  """ ""                              O',
+    'O     """                              O',
+    'O     """          "                   O',
+    'O     """                              O',
+    'O     """                              O',
+    'O     """                              O',
+    'O     """                              O',
+    'O     """                              O',
+    'O     """                              O',
+    'O     """                              O',
+    'O     """                              O',
+    'O     """                              O',
+    'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO',
 ]]
 
 
